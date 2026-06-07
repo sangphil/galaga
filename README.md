@@ -23,7 +23,12 @@
 - 웨이브가 오를수록 다이브 빈도·돌진/탄 속도·발사 빈도가 점진적으로 상승 (1웨이브는 쉽게 시작)
 - 별 배경 스크롤, 폭발 파티클, HUD(점수·웨이브·잔기)
 
-## 배포 (선택)
+## 플레이 (배포된 URL)
 
-GitHub Pages로 공개하려면 저장소 **Settings → Pages → Source**를 `main` 브랜치로 설정한 뒤
-`https://<사용자명>.github.io/<저장소명>/Galaga/galaga.html` 로 접속합니다.
+👉 **https://sangphil.github.io/galaga/galaga.html**
+
+## 배포 방식
+
+`main` 브랜치에 PR이 머지되면 GitHub Actions가 자동으로 GitHub Pages에 배포합니다.
+`main`에는 직접 푸시할 수 없으며, 모든 변경은 PR을 통해 반영됩니다.
+자세한 개발/배포 절차는 [CONTRIBUTING.md](CONTRIBUTING.md)를 참고하세요.
