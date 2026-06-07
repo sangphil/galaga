@@ -1,0 +1,26 @@
+name: CI
+
+# main으로 향하는 모든 PR에서 HTML/JS 문법을 검사합니다.
+# 이 검사가 통과해야만 PR을 머지할 수 있습니다(필수 상태 검사로 설정됨).
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate HTML & embedded JavaScript
+        run: node scripts/check-html.mjs
