@@ -285,10 +285,15 @@
   }
 
   // ---- drawing ----
-  function drawShip(x, y, blink) {
-    if (blink && Math.floor(stateTimer / 4) % 2 === 0) return;
+  function drawShip(x, y, invuln) {
     ctx.save();
     ctx.translate(x, y);
+    // 피격 후 무적 시간: 사라지지 않고 반투명으로 빠르게 깜빡이게 표현.
+    // invuln 값이 매 프레임 줄어들므로 이를 위상으로 써서 부드럽게 점멸시킨다.
+    if (invuln > 0) {
+      const pulse = Math.sin(invuln * 0.4) * 0.5 + 0.5; // 0~1 진동
+      ctx.globalAlpha = 0.25 + 0.5 * pulse;             // 0.25~0.75 사이로 반짝임
+    }
     ctx.fillStyle = '#fff';
     // body
     ctx.fillRect(-2, -10, 4, 6);
@@ -365,7 +370,7 @@
 
     // player
     if (state === 'play' || state === 'win') {
-      drawShip(player.x, player.y, player.invuln > 0);
+      drawShip(player.x, player.y, player.invuln);
     }
 
     // particles
@@ -389,7 +394,7 @@
       ctx.save();
       ctx.translate(20 + i * 24, H - 14);
       ctx.scale(0.55, 0.55);
-      drawShip(0, 0, false);
+      drawShip(0, 0, 0);
       ctx.restore();
     }
 
