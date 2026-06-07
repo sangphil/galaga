@@ -180,7 +180,9 @@
 
     // dive attacks
     enemies.forEach(e => {
-      if (!e.diving && Math.random() < 0.0008 + wave * 0.0002) {
+      // dive frequency ramps up each wave; first ~1.5s of a wave is a grace period
+      if (!e.diving && enemyStepTimer > 90 &&
+          Math.random() < 0.0002 + (wave - 1) * 0.0004) {
         e.diving = true;
         e.diveT = 0;
         e.diveTargetX = player.x;
@@ -189,7 +191,7 @@
         e.diveT += 0.02;
         const t = e.diveT;
         e.x += Math.sin(t * 4) * 2;
-        e.y += 3 + wave * 0.3;
+        e.y += 2.2 + (wave - 1) * 0.45;
         if (e.y > H + 30) {
           e.diving = false;
           e.y = -30;
@@ -199,11 +201,11 @@
         }
       }
 
-      // shooting
+      // shooting: rarer & slower early, more frequent & faster each wave
       e.shootCD--;
-      if (e.shootCD <= 0 && Math.random() < 0.3) {
-        enemyBullets.push({ x: e.x, y: e.y + 10, vy: 3 + wave * 0.2 });
-        e.shootCD = 150 + Math.random() * 200;
+      if (e.shootCD <= 0 && Math.random() < 0.12 + (wave - 1) * 0.06) {
+        enemyBullets.push({ x: e.x, y: e.y + 10, vy: 2.2 + (wave - 1) * 0.45 });
+        e.shootCD = (240 - wave * 20) + Math.random() * (240 - wave * 20);
       }
     });
 
