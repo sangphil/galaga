@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+# main 브랜치에 변경이 머지되면(=PR 승인 후 머지) 자동으로 Pages에 배포합니다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 동일 시점 중복 배포 방지
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
